@@ -1,0 +1,217 @@
+<!doctype html>
+<html ng-app="todoApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TaskMaster Hub</title>
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background: #ffffff;
+        width: 420px;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .stats {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 15px;
+        color: #777;
+      }
+
+      .filters {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .filters button {
+        padding: 6px 12px;
+        margin: 0 4px;
+        border: none;
+        border-radius: 20px;
+        background: #f1f1f1;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 13px;
+      }
+
+      .filters button:hover {
+        background: #667eea;
+        color: #fff;
+      }
+
+      ul {
+        list-style: none;
+        margin-bottom: 15px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+
+      li:hover {
+        background: #eef1ff;
+      }
+
+      .task-text {
+        flex: 1;
+        margin-left: 8px;
+        font-size: 14px;
+      }
+
+      .completed {
+        text-decoration: line-through;
+        color: #aaa;
+      }
+
+      .delete-btn {
+        background: #ff4d4d;
+        border: none;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: 0.3s;
+      }
+
+      .delete-btn:hover {
+        background: #e60000;
+      }
+
+      .input-section {
+        display: flex;
+      }
+
+      .input-section input {
+        flex: 1;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        outline: none;
+      }
+
+      .add-btn {
+        margin-left: 8px;
+        padding: 8px 14px;
+        border: none;
+        background: #667eea;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .add-btn:hover {
+        background: #5a67d8;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="todoController">
+    <div class="container">
+      <h2>TaskMaster Hub</h2>
+
+      <div class="stats">{{pending()}} of {{todos.length}} tasks remaining</div>
+
+      <div class="filters">
+        <button ng-click="filterStatus=''">All</button>
+        <button ng-click="filterStatus={completed:false}">Pending</button>
+        <button ng-click="filterStatus={completed:true}">Completed</button>
+      </div>
+
+      <ul>
+        <li ng-repeat="todo in todos | filter:filterStatus">
+          <input type="checkbox" ng-model="todo.completed" />
+          <span class="task-text" ng-class="{'completed': todo.completed}">
+            {{todo.work}}
+          </span>
+          <button class="delete-btn" ng-click="deleteTodo($index)">
+            Delete
+          </button>
+        </li>
+      </ul>
+
+      <div class="input-section">
+        <input type="text" ng-model="newTodo" placeholder="Add a new task..." />
+        <button class="add-btn" ng-click="addTodo()">Add</button>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("todoApp", []);
+
+      app.controller("todoController", function ($scope) {
+        $scope.todos = [
+          { work: "Learn AngularJS", completed: false },
+          { work: "Build Mini Project", completed: false },
+          { work: "Submit Assignment", completed: true },
+        ];
+
+        $scope.addTodo = function () {
+          if ($scope.newTodo) {
+            $scope.todos.push({
+              work: $scope.newTodo,
+              completed: false,
+            });
+            $scope.newTodo = "";
+          }
+        };
+
+        $scope.deleteTodo = function (index) {
+          $scope.todos.splice(index, 1);
+        };
+
+        $scope.pending = function () {
+          var count = 0;
+          angular.forEach($scope.todos, function (todo) {
+            if (!todo.completed) count++;
+          });
+          return count;
+        };
+      });
+    </script>
+  </body>
+</html>
