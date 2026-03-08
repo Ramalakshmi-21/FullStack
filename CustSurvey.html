@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Customer Survey</title>
+  </head>
+
+  <body>
+    <h2>Customer Survey Form</h2>
+
+    <form action="/submit" method="POST">
+      <label>Name:</label><br />
+
+      <input type="text" name="name" required /><br /><br />
+
+      <label>Email:</label><br />
+
+      <input type="email" name="email" required /><br /><br />
+
+      <label>Rate our service:</label><br />
+
+      <select name="rating">
+        <option>Excellent</option>
+
+        <option>Good</option>
+
+        <option>Average</option>
+
+        <option>Poor</option>
+      </select>
+
+      <br /><br />
+
+      <label>Feedback:</label><br />
+
+      <textarea name="feedback"></textarea>
+
+      <br /><br />
+
+      <button type="submit">Submit Survey</button>
+    </form>
+  </body>
+</html>
